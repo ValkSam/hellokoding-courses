@@ -20,9 +20,9 @@ public class JwtUtil {
         return builder.compact();
     }
 
-    public static String getSubject(HttpServletRequest httpServletRequest, String jwtTokenCookieName, String signingKey){
+    public static String getSubject(HttpServletRequest httpServletRequest, String jwtTokenCookieName, String signingKey) {
         String token = CookieUtil.getValue(httpServletRequest, jwtTokenCookieName);
-        if(token == null) return null;
+        if (token == null) return null;
         return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).getBody().getSubject();
     }
 }

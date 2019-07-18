@@ -1,5 +1,7 @@
 package com.hellokoding.sso.resource;
 
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -14,11 +16,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println(">> JwtFilter");
         String username = JwtUtil.getSubject(httpServletRequest, jwtTokenCookieName, signingKey);
-        if(username == null){
+        if (username == null) {
             String authService = this.getFilterConfig().getInitParameter("services.auth");
             httpServletResponse.sendRedirect(authService + "?redirect=" + httpServletRequest.getRequestURL());
-        } else{
+        } else {
             httpServletRequest.setAttribute("username", username);
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
